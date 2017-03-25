@@ -26,8 +26,10 @@
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
           <filterProperties>
             <mrm.distribution.url>${mrm.distribution.url}</mrm.distribution.url>
+            <mrm.repository.url>${mrm.repository.url}</mrm.repository.url>
           </filterProperties>
           <postBuildHookScript>verify</postBuildHookScript>
           <goal>verify</goal>
@@ -39,20 +41,28 @@
         <version>@project.version@</version>
         <executions>
           <execution>
+            <id>distribution</id>
+            <goals>
+              <goal>start</goal>
+              <goal>stop</goal>
+            </goals>
+            <configuration>
+              <propertyName>mrm.distribution.url</propertyName>
+              <repositories>
+                <hostedRepo>
+                  <target>${project.build.directory}/hosted-repo</target>
+                </hostedRepo>
+              </repositories>
+            </configuration>
+          </execution>
+          <execution>
+            <id>repository</id>
             <goals>
               <goal>start</goal>
               <goal>stop</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <propertyName>mrm.distribution.url</propertyName>
-          <repositories>
-            <hostedRepo>
-              <target>${project.build.directory}/hosted-repo</target>
-            </hostedRepo>
-          </repositories>
-        </configuration>
       </plugin>
     </plugins>
   </build>
